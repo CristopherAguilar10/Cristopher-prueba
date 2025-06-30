@@ -75,8 +75,19 @@
 
 .card.fixed {
   position: absolute;
-  transform-origin: center;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 180px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  padding: 10px;
+  z-index: 2;
+
 }
+
 
 .dot {
   position: absolute;
@@ -96,3 +107,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.card {
+  transition: transform 0.3s ease, scale 0.3s ease, opacity 0.3s ease;
+  scale: 0.8;
+  opacity: 0.6;
+}
+
+.card.active {
+  scale: 1.15;
+  z-index: 10;
+  opacity: 1;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
