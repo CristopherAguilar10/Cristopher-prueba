@@ -1,0 +1,98 @@
+.wheel-container {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.rotating-group {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  transition: transform 0.2s ease-out;
+}
+
+.wheel-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 180px;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 10px;
+  z-index: 2;
+  transition: transform 0.3s ease-out;
+  transform-origin: center center;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.red-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 460px;
+  height: 460px;
+  border: 2px solid red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.card.fixed {
+  position: absolute;
+  transform-origin: center;
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+}
+
+.red-circle {
+  position: absolute;
+  width: 460px; /* 2 * radius */
+  height: 460px;
+  border: 2px solid red;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
