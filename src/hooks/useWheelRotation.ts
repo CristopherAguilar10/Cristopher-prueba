@@ -1,21 +1,55 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
-export const useWheelRotation = () => {
+type Coords = {
+  clientX: number;
+  clientY: number;
+};
+
+export const useWheelDrag = () => {
   const [rotation, setRotation] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isDragging = useRef(false);
+  const startAngle = useRef(0);
+  const lastRotation = useRef(0);
 
-  const onWheel = useCallback((e: WheelEvent) => {
-    e.preventDefault(); // evita scroll vertical de la página
-    const delta = e.deltaY;
-    setRotation((r) => r + delta * 0.3);
-  }, []);
+  const getAngle = (e: Coords, rect: DOMRect) => {
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+    return Math.atan2(y, x) * (180 / Math.PI);
+  };
+
+  const handleMouseDown = (e: MouseEvent | React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    startAngle.current = getAngle(e, rect);
+    isDragging.current = true;
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const currentAngle = getAngle(e, rect);
+    const delta = currentAngle - startAngle.current;
+    setRotation(lastRotation.current + delta);
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    lastRotation.current = rotation;
+  };
 
   useEffect(() => {
-    window.addEventListener('wheel', onWheel, { passive: false });
-
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
     return () => {
-      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [onWheel]);
+  }, [rotation]);
 
-  return { rotation };
+  return {
+    rotation,
+    containerRef,
+    handleMouseDown,
+  };
 };
