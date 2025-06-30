@@ -20,17 +20,17 @@ const cards = [
 ];
 
 export default function WheelCarousel() {
- const { rotation, containerRef, handleMouseDown, isDragging } = useWheelDrag();
-
+  
+   const { rotation, containerRef, handleMouseDown } = useWheelDrag(cards.length);
   const radius = 230;
   const stepAngle = (2 * Math.PI) / cards.length;
 
   return (
     <div
-  ref={containerRef}
-  className={`wheel-container ${isDragging ? "dragging" : ""}`}
-  onPointerDown={handleMouseDown}
->
+      ref={containerRef}
+      className="wheel-container"
+      onPointerDown={handleMouseDown}
+    >
       <div
         className="rotating-group"
         style={{ transform: `rotate(${rotation}deg)` }}
