@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type Coords = { clientX: number; clientY: number };
 
@@ -6,53 +6,49 @@ export const useWheelDrag = (steps: number) => {
   const [rotation, setRotation] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
-  const prevAngle = useRef(0);
+  const startAngle = useRef(0);
   const lastRotation = useRef(0);
-  const center = useRef({ x: 0, y: 0 });
+  const stepAngle = 360 / steps;
 
-  const getAngle = (e: Coords) =>
-    Math.atan2(e.clientY - center.current.y, e.clientX - center.current.x) * (180 / Math.PI);
+  const getAngle = (e: Coords, rect: DOMRect) =>
+    Math.atan2(
+      e.clientY - (rect.top + rect.height / 2),
+      e.clientX - (rect.left + rect.width / 2)
+    ) *
+    (180 / Math.PI);
 
   const handleMouseDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    center.current = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-    
-    prevAngle.current = getAngle(e);
+    startAngle.current = getAngle(e, rect);
     isDragging.current = true;
-
-    window.addEventListener("pointermove", handleMouseMove);
-    window.addEventListener("pointerup", handleMouseUp);
-
-    e.currentTarget.setPointerCapture?.(e.pointerId);
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
   };
 
   const handleMouseMove = (e: PointerEvent) => {
-    if (!isDragging.current) return;
-    const angle = getAngle(e as any);
-    const delta = angle - prevAngle.current;
-    
-    prevAngle.current = angle;
-    lastRotation.current += delta;
-    setRotation(lastRotation.current);
+    if (!isDragging.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const current = getAngle(e as any, rect);
+    setRotation(lastRotation.current + (current - startAngle.current));
   };
 
   const handleMouseUp = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
-
-    window.removeEventListener("pointermove", handleMouseMove);
-    window.removeEventListener("pointerup", handleMouseUp);
-
-    const stepAngle = 360 / steps;
-    const snapped = Math.round(lastRotation.current / stepAngle) * stepAngle;
-    lastRotation.current = snapped;
+    const raw = lastRotation.current = rotation;
+    const snapped = Math.round(raw / stepAngle) * stepAngle;
     setRotation(snapped);
+    lastRotation.current = snapped;
   };
 
-  return {
-    rotation,
-    containerRef,
-    handleMouseDown,
-  };
+  useEffect(() => {
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
+    return () => {
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
+    };
+  }, [rotation]);
+
+  return { rotation, containerRef, handleMouseDown };
 };
