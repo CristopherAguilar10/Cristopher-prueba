@@ -1,19 +1,19 @@
-.carousel-section {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #111;
+.wheel-positioning {
+  height: 110vh;
+  background: #000;
   display: flex;
-  align-items: flex-start; /* Parte superior de la pantalla */
   justify-content: center;
-  padding-top: 80px;
-  box-sizing: border-box;
-  overflow: hidden;
+  align-items: flex-end;
+  padding-bottom: 60px;
 }
 
-.carousel-wrapper {
+.wheel-overlay-top {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 45%;      /* ⚙️ Ajusta si quieres cubrir menos o más */
   width: 100%;
-  max-width: 1400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #e0e0e0; /* ⚪ color gris claro */
+  z-index: 2;
+  pointer-events: none;
 }

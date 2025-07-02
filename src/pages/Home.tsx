@@ -1,8 +1,13 @@
 import Wheel from "../components/rimCarousel";
+import "./Home.css";
 
 export default function Home() {
   return (
-    <div style={{ background: "#000", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div className="wheel-positioning">
+      {/* 🎯 Este div es el que tapa la parte superior de la llanta */}
+      <div className="wheel-overlay-top" />
+
+      {/* Tu llanta */}
       <Wheel steps={3} />
     </div>
   );

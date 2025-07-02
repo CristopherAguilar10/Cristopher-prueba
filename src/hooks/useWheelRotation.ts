@@ -1,16 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 
-type Coords = {
-  clientX: number;
-  clientY: number;
-};
+type Coords = { clientX: number; clientY: number };
 
 export const useWheelDrag = () => {
   const [rotation, setRotation] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
   const isDragging = useRef(false);
   const startAngle = useRef(0);
-  const lastRotation = useRef(0);
+  const baseRotation = useRef(0);
 
   const getAngle = (e: Coords, rect: DOMRect) => {
     const x = e.clientX - (rect.left + rect.width / 2);
@@ -18,32 +16,40 @@ export const useWheelDrag = () => {
     return Math.atan2(y, x) * (180 / Math.PI);
   };
 
-  const handleMouseDown = (e: MouseEvent | React.MouseEvent) => {
+  const handleMouseDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     startAngle.current = getAngle(e, rect);
+    baseRotation.current = rotation;
     isDragging.current = true;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = (e: PointerEvent) => {
     if (!isDragging.current || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const currentAngle = getAngle(e, rect);
-    const delta = currentAngle - startAngle.current;
-    setRotation(lastRotation.current + delta);
+    const currentAngle = getAngle(e as any, rect);
+
+    let delta = currentAngle - startAngle.current;
+
+    // Normaliza entre -180 y 180
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+
+    setRotation(baseRotation.current + delta);
   };
 
   const handleMouseUp = () => {
     isDragging.current = false;
-    lastRotation.current = rotation;
+    baseRotation.current = rotation;
   };
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
     };
   }, [rotation]);
 
