@@ -26,8 +26,8 @@ const getPaddedCards = (cards: CardType[], steps: number): CardType[] => {
 export default function Wheel({ steps }: WheelProps) {
   const { rotation, containerRef, handleMouseDown } = useWheelDrag(steps);
   const paddedCards = getPaddedCards(cards, steps);
-  const radius = 450;
-
+  const containerSize = 1000; // luego se puede hacer dinámico con refs
+  const radius = containerSize / 2 - 40;
 
   const normalizedRotation = ((rotation % 360) + 360) % 360;
 
