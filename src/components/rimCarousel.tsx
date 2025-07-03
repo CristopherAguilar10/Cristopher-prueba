@@ -68,7 +68,7 @@ export default function Wheel({ steps }: WheelProps) {
                   transform: `
       translate(-50%, -${radius}px)
       rotate(${-rotation - angleDeg}deg)
-      scale(${i === selectedIndex ? 1.5 : 1})
+      scale(${i === selectedIndex ? 1.55 : 1})
     `,
                   transformOrigin: "center center",
                   transition: "transform 0.3s ease-out",
