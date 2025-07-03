@@ -1,7 +1,7 @@
 .wheel-container {
   position: relative;
   width: 90vw;
-  height: 90vw;        /* mantiene proporción cuadrada */
+  height: 90vw;        
   max-width: 400px;
   max-height: 400px;
   margin: auto;
@@ -67,9 +67,9 @@
 
 .card {
   position: absolute;
-  width: 40vw;               /* Toma 40% del ancho del viewport */
+  width: 40vw;              
   max-width: 180px;
-  aspect-ratio: 1;           /* Mantiene proporción cuadrada */
+  aspect-ratio: 1;           
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -84,7 +84,7 @@
 .card img {
   width: 100%;
   height: auto;
-  aspect-ratio: 3/2;         /* Mantiene una buena proporción imagen */
+  aspect-ratio: 3/2;         
   object-fit: cover;
   display: block;
 }
@@ -97,4 +97,13 @@
 }
 
 
-
+.wheel-positioning {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  background: #000;
+  padding-top: 120px; 
+  box-sizing: border-box;
+}

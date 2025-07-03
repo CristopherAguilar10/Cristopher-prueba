@@ -26,7 +26,7 @@ const getPaddedCards = (cards: CardType[], steps: number): CardType[] => {
 export default function Wheel({ steps }: WheelProps) {
   const { rotation, containerRef, handleMouseDown } = useWheelDrag(steps);
   const paddedCards = getPaddedCards(cards, steps);
-  const containerSize = 1000; // luego se puede hacer dinámico con refs
+  const containerSize = 1000; 
   const radius = containerSize / 2 - 40;
 
   const normalizedRotation = ((rotation % 360) + 360) % 360;
@@ -51,7 +51,7 @@ export default function Wheel({ steps }: WheelProps) {
       >
         <div className="rotating-ring"></div>
 
-        {/* 🃏 Cards */}
+        
         {paddedCards.map((card, i) => {
           const angleDeg = (360 / steps) * i;
 
@@ -61,7 +61,7 @@ export default function Wheel({ steps }: WheelProps) {
               className="dot-wrapper"
               style={{ transform: `rotate(${angleDeg}deg)` }}
             >
-              {/* Card con efecto de selección */}
+              
               <div
                 className="card"
                 style={{
@@ -104,7 +104,7 @@ export default function Wheel({ steps }: WheelProps) {
           );
         })}
 
-        {/* 🛞 Llanta */}
+        
         <img src="/assets/Llanta.png" alt="Llanta" className="wheel-image" />
       </div>
     </div>

@@ -11,9 +11,9 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 45%;      /* ⚙️ Ajusta si quieres cubrir menos o más */
+  height: 42%;      
   width: 100%;
-  background-color: #e0e0e0; /* ⚪ color gris claro */
+  background-color: #2a2929; 
   z-index: 2;
   pointer-events: none;
 }
