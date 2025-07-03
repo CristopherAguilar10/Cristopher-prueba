@@ -8,7 +8,7 @@ export default function Home() {
       <div className="wheel-overlay-top" />
 
       {/* Tu llanta */}
-      <Wheel steps={3} />
+      <Wheel steps={5} />
     </div>
   );
 }
